@@ -23,9 +23,6 @@
               </div>
             </li>
           </ul>
-          <button class="m-3 btn btn-sm btn-danger" @click="removeAllRecepts">
-            Izbrisi vse
-          </button>
         </div>
       </div>
     </div>
@@ -39,8 +36,6 @@ export default {
   data() {
     return {
       recepti: [],
-      currentRecept: null,
-      currentIndex: -1,
       title: ""
     };
   },
@@ -59,7 +54,6 @@ export default {
           });
     },
     retrieveSlika(slika) {
-      console.log(slika);
       if(slika == null) {
         return "https://health.gov/sites/default/files/2019-06/SVG%20Layer4.svg";
       } else {
@@ -68,17 +62,15 @@ export default {
     },
     refreshList() {
       this.retrieveRecepti();
-      this.currentTutorial = null;
-      this.currentIndex = -1;
     },
     setActiveRecept(recept, index) {
-      console.log("Izbran recept: " + recept + ", index: " + index);
-      this.currentTutorial = recept;
-      this.currentIndex = index;
+      console.log("Izbran recept: " + recept.recept.receptId + ", index: " + index);
+
+      this.$router.push("/recepti/" + recept.recept.receptId);
 
     },
     removeAllRecepts() {
-
+      // TODO
     },
     mounted() {
       this.retrieveRecepti();

@@ -2,7 +2,7 @@
   <div id="app">
     <div id="nav">
       <router-link :to="{ name: 'Recepti' }" class="nav-link">Recepti</router-link>
-      <router-link :to="{ name: 'Dodaj' }" class="nav-link">Dodaj Recept</router-link>
+      <router-link :to="{ name: 'AddRecept' }" class="nav-link">Dodaj Recept</router-link>
     </div>
     <transition name="fade">
       <div class="gap">

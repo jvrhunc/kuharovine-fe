@@ -47,20 +47,21 @@
 
               <div class="form-item">
                 <label for="sestavine" >Sestavine:</label>
-                <input
-                    type="text"
-                    class="form-control"
-                    id="sestavine"
-                    required
-                    v-model="recept.sestavine"
-                    name="ime"
-                />
+                <p id="sestavine">TODO</p>
+                <!--            <input-->
+                <!--                type="text"-->
+                <!--                class="form-control"-->
+                <!--                id="sestavine"-->
+                <!--                required-->
+                <!--                v-model="currentRecept.sestavine"-->
+                <!--                name="ime"-->
+                <!--            />-->
               </div>
+              <button @click="saveRecept" class="btn btn-success button-edit">Dodaj</button>
             </div>
-            <button @click="saveRecept" class="btn btn-success button-edit">Dodaj</button>
           </div>
           <div v-else>
-            <h4>You submitted successfully!</h4>
+            <h4>Uspešno ste dodali svoj recept!</h4>
             <button class="btn btn-success" @click="newRecept">Dodaj novega</button>
           </div>
         </div>
@@ -70,7 +71,7 @@
 </template>
 <script>
 
-import ReceptiDataService from "@/services/ReceptiDataService";
+// import ReceptiDataService from "@/services/ReceptiDataService";
 
 export default {
   name: "add-recept",
@@ -97,15 +98,19 @@ export default {
         sestavine: []
       };
 
-      ReceptiDataService.saveRecept(data)
-      .then(response => {
-        console.log(response.data);
-        this.recept.id = response.data.id;
-        this.submitted = true;
-      })
-      .catch(e => {
-        console.log(e);
-      });
+      console.log(data);
+      // TODO ne dela post zarad corsa
+      // ReceptiDataService.saveRecept(data)
+      // .then(response => {
+      //   console.log(response.data);
+      //   this.recept.id = response.data.id;
+      //   this.submitted = true;
+      // })
+      // .catch(e => {
+      //   console.log(e);
+      // });
+
+      this.submitted = true;
 
     },
     newRecept() {

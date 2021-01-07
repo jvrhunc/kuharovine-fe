@@ -1,4 +1,4 @@
-import http from "../http-common";
+import http from "../http-recepti";
 
 class ReceptiDataService {
   getAll() {
@@ -10,7 +10,9 @@ class ReceptiDataService {
   saveRecept(data) {
     return http.post("/recepti/add", data);
   }
-
+  deleteRecept(id) {
+    return http.delete("/recepti/delete/" + id);
+  }
 }
 
 export default new ReceptiDataService();
