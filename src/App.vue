@@ -1,6 +1,6 @@
 <template>
-  <div id="app">
-    <div id="nav" style="margin-bottom: -50px;">
+  <div id="app" style="margin-bottom: 30px">
+    <div id="nav" style="margin-bottom: -40px; background-color: #000000d1">
       <router-link :to="{ name: 'Home'}" class="nav-link">Izbira uporabnika</router-link>
 <!--      <router-link :to="{ name: 'Recepti' }" class="nav-link">Recepti</router-link>-->
 <!--      <router-link :to="{ name: 'AddRecept' }" class="nav-link">Dodaj Recept</router-link>-->
@@ -29,11 +29,11 @@
 
 #nav a {
   font-weight: bold;
-  color: #2c3e50;
+  color: #156d43;
 }
 
 #nav a.router-link-exact-active {
-  color: #569679;
+  color: #00a75c;
 }
 
 .gap {

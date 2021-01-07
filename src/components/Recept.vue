@@ -34,11 +34,11 @@
             <div class="col-md-12">
               <h4>Komentarji</h4>
               <div v-for="komentar in this.komentarji" :key="komentar.komentarId">
-                <div class="row">
-                  <div class="col-md-1">
-                    {{ komentar.uporabnikId }}
+                <div class="row" style="border: 1px solid; border-radius: 10px; margin-bottom: 10px; padding: 10px;">
+                  <div class="col-md-2">
+                    {{ getUsername(komentar.uporabnikId) }}
                   </div>
-                  <div class="col-md-6">
+                  <div class="col-md-5">
                     {{ komentar.komentar }}
                   </div>
                   <div class="col-md-2">
@@ -129,7 +129,7 @@ export default {
         ocena: 1
       },
       uporabnik: null,
-      uporabniki: {},
+      uporabniki: {}
     };
   },
   created() {
@@ -155,7 +155,7 @@ export default {
       if (slika == null) {
         return "https://health.gov/sites/default/files/2019-06/SVG%20Layer4.svg";
       } else {
-        return "http://localhost:8082/v1/slike/s3/getFile/" + slika.slikaId;
+        return "http://34.120.90.22/v1/slike/s3/getFile/" + slika.slikaId;
       }
     },
     dodajKomentar() {
@@ -238,6 +238,9 @@ export default {
       }
     },
     getUsername(userId) {
+      console.log("UPORABNIKI");
+      console.log(userId);
+      console.log(this.uporabniki);
       let user = this.uporabniki[userId];
       return user;
     }
