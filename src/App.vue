@@ -1,11 +1,16 @@
 <template>
   <div id="app">
     <div id="nav">
-      <router-link to="/">Home</router-link> |
-      <router-link to="/about">About</router-link>
+      <router-link :to="{ name: 'Recepti' }" class="nav-link">Recepti</router-link>
+      <router-link :to="{ name: 'Dodaj' }" class="nav-link">Dodaj Recept</router-link>
     </div>
-    <router-view />
+    <transition name="fade">
+      <div class="gap">
+        <router-view></router-view>
+      </div>
+    </transition>
   </div>
+
 </template>
 
 <style>
@@ -28,5 +33,9 @@
 
 #nav a.router-link-exact-active {
   color: #42b983;
+}
+
+.gap {
+  margin-top: 50px;
 }
 </style>
