@@ -7,8 +7,11 @@ class ReceptiDataService {
   getById(id) {
     return http.get("/recepti/" + id);
   }
-  saveRecept(data) {
-    return http.post("/recepti/add", data);
+  saveRecept(data, userId) {
+    return http.post("/recepti/add/" + userId, data);
+  }
+  updateRecept(data, receptId) {
+    return http.put("/recepti/update/" + receptId, data);
   }
   deleteRecept(id) {
     return http.delete("/recepti/delete/" + id);

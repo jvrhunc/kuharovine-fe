@@ -30,24 +30,24 @@
                 />
               </div>
               <div class="form-item">
-                <label for="radioTip" >Tip recepta:</label>
+                <label for="radioTip">Tip recepta:</label>
                 <div id="radioTip" class="form-control">
 
                   <input type="radio" id="pred" value="GLAV" v-model="recept.tip">
                   <label for="pred">Predjed</label>
-                   |
+                  |
                   <input type="radio" id="glavna" value="PRED" v-model="recept.tip">
                   <label for="glavna">Glavna jed</label>
                   |
                   <input type="radio" id="slad" value="SLAD" v-model="recept.tip">
                   <label for="slad">Sladica</label>
-
                 </div>
               </div>
 
               <div class="form-item">
-                <label for="sestavine" >Sestavine:</label>
+                <label for="sestavine">Sestavine:</label>
                 <p id="sestavine">TODO</p>
+                <!-- TODO -->
                 <!--            <input-->
                 <!--                type="text"-->
                 <!--                class="form-control"-->
@@ -67,12 +67,12 @@
         </div>
       </div>
     </div>
+    <div class="col-md-8">
+      <button class="btn btn-primary" style="margin-top: 30px" @click="nazaj">Nazaj</button>
+    </div>
   </div>
 </template>
 <script>
-
-// import ReceptiDataService from "@/services/ReceptiDataService";
-
 import ReceptiDataService from "@/services/ReceptiDataService";
 
 export default {
@@ -105,18 +105,17 @@ export default {
       };
 
       console.log(data);
-      // TODO ne dela post zarad corsa
-      // ReceptiDataService.saveRecept(data)
-      // .then(response => {
-      //   console.log(response.data);
-      //   this.recept.id = response.data.id;
-      //   this.submitted = true;
-      // })
-      // .catch(e => {
-      //   console.log(e);
-      // });
-
-      this.submitted = true;
+      // TODO ne dela POST zarad corsa policya
+      ReceptiDataService.saveRecept(data, this.uporabnik.id)
+          .then(response => {
+            console.log(response.data);
+            this.recept.id = response.data.id;
+            this.submitted = true;
+          })
+          .catch(e => {
+            console.log(e);
+            this.submitted = false;
+          });
 
     },
     newRecept() {
@@ -132,6 +131,9 @@ export default {
           .catch(e => {
             console.log(e);
           });
+    },
+    nazaj() {
+      this.$router.push("/" + this.uporabnik.id + "/recepti/");
     }
   }
 };

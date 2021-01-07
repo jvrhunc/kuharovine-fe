@@ -1,6 +1,9 @@
 <template>
   <div class="row justify-content-center">
     <div class="col-md-8">
+      <button class="btn btn-primary" style="margin-bottom: 30px; float: left" @click="nazaj">Nazaj</button>
+    </div>
+    <div class="col-md-8">
       <div class="card card-default">
         <div class="card-header">
           <h2>{{ currentRecept.recept.ime }}</h2>
@@ -10,7 +13,7 @@
             <div class="col-md-6">
               <img class="img"
                    v-bind:src="retrieveSlika(currentRecept.slika)"/>
-              <span style="font-size: 12px;">by uporabnik(TODO)</span>
+              <span style="font-size: 16px;">by {{ getUsername(currentRecept.recept.uporabnikId) }}</span>
             </div>
             <div class="col-md-6">
               <label for="opis"><b>Opis:</b></label>
@@ -91,8 +94,7 @@
               </div>
             </div>
           </div>
-          <!-- TODO dodaj logiko za userja -->
-          <div style="margin-top: 40px" class="row">
+          <div style="margin-top: 40px" class="row" v-if="this.isHisPost()">
             <div class="col-md-4">
               <button class="btn btn-primary" @click="dodajSliko">Dodaj sliko</button>
             </div>
@@ -110,6 +112,7 @@
 </template>
 <script>
 import ReceptiDataService from "@/services/ReceptiDataService";
+import KomentarDataService from "@/services/KomentarDataService";
 
 export default {
   name: "recept-by-id",
@@ -125,10 +128,12 @@ export default {
         komentar: "",
         ocena: 1
       },
-      uporabnik: null
+      uporabnik: null,
+      uporabniki: {},
     };
   },
   created() {
+    this.getAllUporabniki();
     this.getUporabnikById(this.$route.params.userId);
     this.getReceptById(this.$route.params.id);
   },
@@ -162,7 +167,14 @@ export default {
       };
 
       console.log(data);
-      // TODO POST komentar
+      // TODO POST komentar (CORS policy)
+      KomentarDataService.saveKomentar(this.$route.params.id, data)
+          .then(response => {
+            console.log(response.data);
+          })
+          .catch(e => {
+            console.log(e);
+          });
 
       this.submitted = true;
       this.refreshRecept();
@@ -179,17 +191,16 @@ export default {
     },
     urediRecept() {
       this.$router.push("/" + this.uporabnik.id + "/recepti/" + this.$route.params.id + "/update");
-
     },
     zbrisiRecept() {
       // TODO delete ne delat zarad Cors Policy
-      // ReceptiDataService.deleteRecept(this.$route.params.id)
-      //     .then(response => {
-      //       console.log(response.data);
-      //     })
-      //     .catch(e => {
-      //       console.log(e);
-      //     });
+      ReceptiDataService.deleteRecept(this.$route.params.id)
+          .then(response => {
+            console.log(response.data);
+          })
+          .catch(e => {
+            console.log(e);
+          });
 
       this.$router.push("/" + this.uporabnik.id + "/recepti");
     },
@@ -202,6 +213,33 @@ export default {
           .catch(e => {
             console.log(e);
           });
+    },
+    getAllUporabniki() {
+      ReceptiDataService.getAllUporabniki()
+          .then(response => {
+            console.log(response.data);
+            let i;
+            for(i = 0; i < response.data.length; i++) {
+              this.uporabniki[response.data[i].id] = response.data[i].username;
+            }
+          })
+          .catch(e => {
+            console.log(e);
+          });
+    },
+    nazaj() {
+      this.$router.push("/" + this.uporabnik.id + "/recepti");
+    },
+    isHisPost() {
+      if (this.currentRecept.recept.uporabnikId === this.uporabnik.id) {
+        return true;
+      } else {
+        return false;
+      }
+    },
+    getUsername(userId) {
+      let user = this.uporabniki[userId];
+      return user;
     }
   }
 };

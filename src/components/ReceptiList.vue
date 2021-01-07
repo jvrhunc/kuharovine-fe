@@ -1,8 +1,10 @@
 <template>
   <div class="row justify-content-center">
     <div class="col-md-8">
+      <button class="btn btn-success" style="margin-bottom: 30px;" @click="dodajNovRecept">Dodaj nov recept</button>
+    </div>
+    <div class="col-md-8">
       <div class="container">
-
         <div>
           <ul class="list-group">
             <li class="list-group-item"
@@ -19,7 +21,7 @@
                 </div>
                 <div class="card-footer">
                   <span>{{ receptItem.recept.created | formatDate }}
-                    by {{ uporabnik.username }}</span>
+                    by {{ getUsername(receptItem.recept.uporabnikId) }}</span>
                 </div>
               </div>
             </li>
@@ -37,12 +39,14 @@ export default {
   data() {
     return {
       recepti: [],
-      uporabnik: null
+      uporabnik: null,
+      uporabniki: {}
     };
   },
   created() {
-    this.getUporabnikById(this.$route.params.userId);
     this.retrieveRecepti();
+    this.getAllUporabniki()
+    this.getUporabnikById(this.$route.params.userId);
   },
   methods: {
     retrieveRecepti() {
@@ -50,6 +54,7 @@ export default {
           .then(response => {
             this.recepti = response.data;
             console.log(response.data);
+
           })
           .catch(e => {
             console.log(e);
@@ -64,7 +69,6 @@ export default {
     },
     selectedRecept(recept) {
       this.$router.push("/" + this.uporabnik.id + "/recepti/" + recept.recept.receptId);
-
     },
     getUporabnikById(userId) {
       ReceptiDataService.getUporabnikById(userId)
@@ -75,6 +79,25 @@ export default {
           .catch(e => {
             console.log(e);
           });
+    },
+    dodajNovRecept() {
+      this.$router.push("/" + this.uporabnik.id + "/recepti/add");
+    },
+    getAllUporabniki() {
+      ReceptiDataService.getAllUporabniki()
+          .then(response => {
+            let i;
+            for(i = 0; i < response.data.length; i++) {
+              this.uporabniki[response.data[i].id] = response.data[i].username;
+            }
+          })
+          .catch(e => {
+            console.log(e);
+          });
+    },
+    getUsername(userId) {
+      let user = this.uporabniki[userId];
+      return user;
     }
   }
 }

@@ -31,7 +31,7 @@
             </div>
           </div>
           <div class="form-item">
-            <label for="radioTip" >Tip recepta:</label>
+            <label for="radioTip">Tip recepta:</label>
             <div id="radioTip" class="form-control">
 
               <input type="radio" id="pred" value="GLAV" v-model="currentRecept.tip">
@@ -46,20 +46,24 @@
             </div>
           </div>
           <div class="form-item">
-            <label for="sestavine" >Sestavine:</label>
+            <label for="sestavine">Sestavine:</label>
             <p id="sestavine">TODO</p>
-<!--            <input-->
-<!--                type="text"-->
-<!--                class="form-control"-->
-<!--                id="sestavine"-->
-<!--                required-->
-<!--                v-model="currentRecept.sestavine"-->
-<!--                name="ime"-->
-<!--            />-->
+            <!-- TODO -->
+            <!--            <input-->
+            <!--                type="text"-->
+            <!--                class="form-control"-->
+            <!--                id="sestavine"-->
+            <!--                required-->
+            <!--                v-model="currentRecept.sestavine"-->
+            <!--                name="ime"-->
+            <!--            />-->
           </div>
         </div>
         <button @click="updateRecept" class="btn btn-success button-edit">Posodobi</button>
       </div>
+    </div>
+    <div class="col-md-8">
+      <button class="btn btn-primary" style="margin-top: 30px" @click="nazaj">Nazaj</button>
     </div>
   </div>
 </template>
@@ -101,7 +105,14 @@ export default {
       };
 
       console.log(data);
-      // TODO ne dela PUT zarad corsa
+      // TODO ne dela POST zarad corsa policya
+      ReceptiDataService.updateRecept(data, this.currentRecept.receptId)
+          .then(response => {
+            console.log(response.data);
+          })
+          .catch(e => {
+            console.log(e);
+          });
 
       this.$router.push("/" + this.uporabnik.id + "/recepti/" + this.$route.params.id);
     },
@@ -114,6 +125,9 @@ export default {
           .catch(e => {
             console.log(e);
           });
+    },
+    nazaj() {
+      this.$router.push("/" + this.uporabnik.id + "/recepti/" + this.$route.params.id);
     }
   }
 };

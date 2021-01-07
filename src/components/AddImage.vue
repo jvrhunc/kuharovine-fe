@@ -32,11 +32,13 @@
         </div>
       </div>
     </div>
+    <div class="col-md-8">
+      <button class="btn btn-primary" style="margin-top: 30px" @click="nazaj">Nazaj</button>
+    </div>
   </div>
 </template>
 <script>
-// import SlikeDataService from "@/services/SlikeDataService";
-
+import SlikeDataService from "@/services/SlikeDataService";
 import ReceptiDataService from "@/services/ReceptiDataService";
 
 export default {
@@ -63,12 +65,16 @@ export default {
       this.progress = 0;
       this.currentFile = this.selectedFiles.item(0);
 
-      // SlikeDataService.addSlika(this.currentFile, this.$route.params.id, event => {
-      //   this.progress = Math.round((100 * event.loaded) / event.total);
-      // }).then(response => {
-      //     console.log(response);
-      //     this.$router.push("/recepti/" + this.$route.params.id)
-      //   });
+      // TODO ne dela zarad Cors policy nad POST
+      SlikeDataService.addSlika(this.currentFile, this.$route.params.id, event => {
+        this.progress = Math.round((100 * event.loaded) / event.total);
+          }).then(response => {
+              console.log(response);
+              this.$router.push("/recepti/" + this.$route.params.id)
+          })
+          .catch(e => {
+            console.log(e);
+          });
 
       this.$router.push("/" + this.uporabnik.id + "/recepti/" + this.$route.params.id);
 
@@ -83,6 +89,9 @@ export default {
           .catch(e => {
             console.log(e);
           });
+    },
+    nazaj() {
+      this.$router.push("/" + this.uporabnik.id + "/recepti/" + this.$route.params.id);
     }
   }
 };
