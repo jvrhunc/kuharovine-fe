@@ -57,7 +57,7 @@ export default {
       if(slika == null) {
         return "https://health.gov/sites/default/files/2019-06/SVG%20Layer4.svg";
       } else {
-        return "http://localhost:8082/v1/slike/s3/getFile/" + slika.slikaId;
+        return "http://34.120.90.22/v1/slike/s3/getFile/" + slika.slikaId;
       }
     },
     refreshList() {
