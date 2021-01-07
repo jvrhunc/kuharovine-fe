@@ -16,27 +16,27 @@ const routes = [
     component: Home
   },
   {
-    path: "/recepti/add",
+    path: "/:userId/recepti/add",
     name: "AddRecept",
     component: AddRecept
   },
   {
-    path: "/recepti",
+    path: "/:userId/recepti",
     name: "Recepti",
     component: ReceptiList
   },
   {
-    path: "/recepti/:id",
+    path: "/:userId/recepti/:id",
     name: "Recept",
     component: Recept
   },
   {
-    path: "/recepti/:id/update",
+    path: "/:userId/recepti/:id/update",
     name: "UpdateRecept",
     component: UpdateRecept
   },
   {
-    path: "/recepti/:id/add/image",
+    path: "/:userId/recepti/:id/add/image",
     name: "AddImage",
     component: AddImage
   },

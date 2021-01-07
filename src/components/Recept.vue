@@ -10,7 +10,7 @@
             <div class="col-md-6">
               <img class="img"
                    v-bind:src="retrieveSlika(currentRecept.slika)"/>
-              <span style="font-size: 12px; float: right">by uporabnik(TODO)</span>
+              <span style="font-size: 12px;">by uporabnik(TODO)</span>
             </div>
             <div class="col-md-6">
               <label for="opis"><b>Opis:</b></label>
@@ -50,7 +50,7 @@
           </div>
           <div style="margin-top: 40px" class="row">
             <div class="col-md-12">
-              <h4>Dodaj svoj komentar</h4>
+              <h4>Dodaj nov komentar</h4>
               <div class="submit-form">
                 <div v-if="!submitted">
                   <div class="form-group">
@@ -124,10 +124,12 @@ export default {
         id: null,
         komentar: "",
         ocena: 1
-      }
+      },
+      uporabnik: null
     };
   },
   created() {
+    this.getUporabnikById(this.$route.params.userId);
     this.getReceptById(this.$route.params.id);
   },
   methods: {
@@ -148,7 +150,7 @@ export default {
       if (slika == null) {
         return "https://health.gov/sites/default/files/2019-06/SVG%20Layer4.svg";
       } else {
-        return "http://34.120.90.22/v1/slike/s3/getFile/" + slika.slikaId;
+        return "http://localhost:8082/v1/slike/s3/getFile/" + slika.slikaId;
       }
     },
     dodajKomentar() {
@@ -173,10 +175,10 @@ export default {
       this.getReceptById(this.$route.params.id);
     },
     dodajSliko() {
-      this.$router.push("/recepti/" + this.$route.params.id + "/add/image");
+      this.$router.push("/" + this.uporabnik.id + "/recepti/" + this.$route.params.id + "/add/image");
     },
     urediRecept() {
-      this.$router.push("/recepti/" + this.$route.params.id + "/update");
+      this.$router.push("/" + this.uporabnik.id + "/recepti/" + this.$route.params.id + "/update");
 
     },
     zbrisiRecept() {
@@ -189,15 +191,25 @@ export default {
       //       console.log(e);
       //     });
 
-      this.$router.push("/recepti");
+      this.$router.push("/" + this.uporabnik.id + "/recepti");
+    },
+    getUporabnikById(userId) {
+      ReceptiDataService.getUporabnikById(userId)
+          .then(response => {
+            console.log(response.data);
+            this.uporabnik = response.data;
+          })
+          .catch(e => {
+            console.log(e);
+          });
     }
   }
 };
 </script>
 <style>
 .img {
-  max-height: 400px;
-  max-width: 400px;
+  max-height: 100%;
+  max-width: 100%;
 }
 
 #mySelect {

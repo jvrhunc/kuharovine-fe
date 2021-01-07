@@ -6,9 +6,9 @@
         <div>
           <ul class="list-group">
             <li class="list-group-item"
-                v-for="(receptItem, index) in this.recepti"
-                :key="index"
-                @click="setActiveRecept(receptItem, index)">
+                v-for="receptItem in this.recepti"
+                :key="receptItem.recept.receptId"
+                @click="selectedRecept(receptItem)">
               <div class="card card-default">
                 <div class="card-header">
                   <p class="recept_name">{{ receptItem.recept.ime }}</p>
@@ -18,7 +18,8 @@
                        v-bind:src="retrieveSlika(receptItem.slika)"/>
                 </div>
                 <div class="card-footer">
-                  <span>{{ receptItem.recept.created | formatDate }} by TODO-uporabnik</span>
+                  <span>{{ receptItem.recept.created | formatDate }}
+                    by {{ uporabnik.username }}</span>
                 </div>
               </div>
             </li>
@@ -36,10 +37,11 @@ export default {
   data() {
     return {
       recepti: [],
-      title: ""
+      uporabnik: null
     };
   },
   created() {
+    this.getUporabnikById(this.$route.params.userId);
     this.retrieveRecepti();
   },
   methods: {
@@ -57,23 +59,22 @@ export default {
       if(slika == null) {
         return "https://health.gov/sites/default/files/2019-06/SVG%20Layer4.svg";
       } else {
-        return "http://34.120.90.22/v1/slike/s3/getFile/" + slika.slikaId;
+        return "http://localhost:8082/v1/slike/s3/getFile/" + slika.slikaId;
       }
     },
-    refreshList() {
-      this.retrieveRecepti();
-    },
-    setActiveRecept(recept, index) {
-      console.log("Izbran recept: " + recept.recept.receptId + ", index: " + index);
-
-      this.$router.push("/recepti/" + recept.recept.receptId);
+    selectedRecept(recept) {
+      this.$router.push("/" + this.uporabnik.id + "/recepti/" + recept.recept.receptId);
 
     },
-    removeAllRecepts() {
-      // TODO
-    },
-    mounted() {
-      this.retrieveRecepti();
+    getUporabnikById(userId) {
+      ReceptiDataService.getUporabnikById(userId)
+          .then(response => {
+            console.log(response.data);
+            this.uporabnik = response.data;
+          })
+          .catch(e => {
+            console.log(e);
+          });
     }
   }
 }
@@ -113,7 +114,7 @@ export default {
 }
 
 .img {
- max-height: 400px;
- max-width: 400px;
+  max-height: 100%;
+  max-width: 100%;
 }
 </style>

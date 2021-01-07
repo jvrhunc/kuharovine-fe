@@ -73,6 +73,8 @@
 
 // import ReceptiDataService from "@/services/ReceptiDataService";
 
+import ReceptiDataService from "@/services/ReceptiDataService";
+
 export default {
   name: "add-recept",
   data() {
@@ -84,8 +86,12 @@ export default {
         tip: "",
         sestavine: []
       },
-      submitted: false
+      submitted: false,
+      uporabnik: null
     };
+  },
+  created() {
+    this.getUporabnikById(this.$route.params.userId);
   },
   methods: {
     saveRecept() {
@@ -116,6 +122,16 @@ export default {
     newRecept() {
       this.recept = {};
       this.submitted = false;
+    },
+    getUporabnikById(userId) {
+      ReceptiDataService.getUporabnikById(userId)
+          .then(response => {
+            console.log(response.data);
+            this.uporabnik = response.data;
+          })
+          .catch(e => {
+            console.log(e);
+          });
     }
   }
 };

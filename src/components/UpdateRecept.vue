@@ -72,9 +72,11 @@ export default {
   data() {
     return {
       currentRecept: null,
+      uporabnik: null
     };
   },
   created() {
+    this.getUporabnikById(this.$route.params.userId);
     this.getReceptById(this.$route.params.id);
   },
   methods: {
@@ -101,7 +103,17 @@ export default {
       console.log(data);
       // TODO ne dela PUT zarad corsa
 
-      this.$router.push("/recepti/" + this.$route.params.id);
+      this.$router.push("/" + this.uporabnik.id + "/recepti/" + this.$route.params.id);
+    },
+    getUporabnikById(userId) {
+      ReceptiDataService.getUporabnikById(userId)
+          .then(response => {
+            console.log(response.data);
+            this.uporabnik = response.data;
+          })
+          .catch(e => {
+            console.log(e);
+          });
     }
   }
 };

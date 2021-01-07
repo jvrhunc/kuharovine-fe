@@ -12,6 +12,7 @@
                   :aria-valuenow="progress"
                   aria-valuemin="0"
                   aria-valuemax="100"
+                  accept="image/jpeg, image/png"
                   :style="{ width: progress + '%' }"
               >
                 {{ progress }}%
@@ -36,6 +37,8 @@
 <script>
 // import SlikeDataService from "@/services/SlikeDataService";
 
+import ReceptiDataService from "@/services/ReceptiDataService";
+
 export default {
   name: "add-image",
   data() {
@@ -45,11 +48,12 @@ export default {
       progress: 0,
       message: "",
 
-      fileInfos: []
+      fileInfos: [],
+      uporabnik: null
     };
   },
   created() {
-
+    this.getUporabnikById(this.$route.params.userId);
   },
   methods: {
     selectFile() {
@@ -66,9 +70,19 @@ export default {
       //     this.$router.push("/recepti/" + this.$route.params.id)
       //   });
 
-      this.$router.push("/recepti/" + this.$route.params.id);
+      this.$router.push("/" + this.uporabnik.id + "/recepti/" + this.$route.params.id);
 
       this.selectedFiles = undefined;
+    },
+    getUporabnikById(userId) {
+      ReceptiDataService.getUporabnikById(userId)
+          .then(response => {
+            console.log(response.data);
+            this.uporabnik = response.data;
+          })
+          .catch(e => {
+            console.log(e);
+          });
     }
   }
 };

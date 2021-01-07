@@ -13,6 +13,12 @@ class ReceptiDataService {
   deleteRecept(id) {
     return http.delete("/recepti/delete/" + id);
   }
+  getAllUporabniki() {
+    return http.get("/recepti/uporabniki");
+  }
+  getUporabnikById(id) {
+    return http.get("/recepti/uporabniki/" + id);
+  }
 }
 
 export default new ReceptiDataService();
